@@ -1,13 +1,20 @@
-import math
-num = 5
+facebook_posts = [
+    {'Likes': 21, 'Comments': 2}, 
+    {'Likes': 13, 'Comments': 2, 'Shares': 1}, 
+    {'Likes': 33, 'Comments': 8, 'Shares': 3}, 
+    {'Comments': 4, 'Shares': 2}, 
+    {'Comments': 1, 'Shares': 1}, 
+    {'Likes': 19, 'Comments': 3}
+]
 
-sec = 2
+total_likes = 0
 
-mod = num % sec
+for post in facebook_posts:
+    try:
+        total_likes = total_likes + post['Likes']
+    except KeyError as error_message:
+        total_likes = total_likes + 0
+        
+        
 
-
-
-test = math.floor(12/2)
-
-for _ in range(test):
-    print(_)
+print(total_likes)

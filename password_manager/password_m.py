@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from random import choice, randint, shuffle
 import pyperclip
-
+import json
 FONT_NAME = "Courier"
 Light_yellow = "#FFFFD0"
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
@@ -32,19 +32,30 @@ def add_to_file():
     email_username_text = entry_email_username.get()
     password_text = entry_password.get()
 
+    new_data = {
+        webiste_text: {
+            "email": email_username_text,
+            "password": password_text
+        }
+    }
+
     if len(webiste_text) < 1 or len(password_text) < 1:
         messagebox.showwarning(title="Warning", message="There are empty text entries, \nplease fill them up!")
     else:
-
-        messagebox.askokcancel(title=webiste_text, 
-                            message=f"details entered: \nEmail: {email_username_text}\nPassword: {password_text}")
-
-        with open("data.txt", "a") as file:
-            file.write(f"{webiste_text} | {email_username_text} | {password_text} \n")
-            
-        entry_website.delete(0, END)
-        entry_password.delete(0, END)
-        entry_website.focus()
+        try:
+            with open("data.json", "r") as datafile:
+                data = json.load(datafile)
+                data.update(new_data)
+        except FileNotFoundError:    
+            with open("data.json", "w") as datafile:
+                json.dump(new_data, datafile, indent=4)
+        else:
+            with open("data.json", "w") as datafile:
+                json.dump(data, datafile, indent=4)
+        finally:
+                entry_website.delete(0, END)
+                entry_password.delete(0, END)
+                entry_website.focus()
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -54,7 +65,7 @@ window.title("Password Manager")
 
 
 canvas = Canvas(width=200, height=200)
-logo_img = PhotoImage(file="logo.png")
+logo_img = PhotoImage(file=r"password_manager\logo.png")
 canvas.create_image(100, 100, image=logo_img)
 canvas.grid(column=1, row=0)
 
