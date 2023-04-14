@@ -1,5 +1,8 @@
 #my ignores
 .txt
+.json
+.csv
+kladd.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

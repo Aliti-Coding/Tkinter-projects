@@ -28,9 +28,9 @@ def password_gen_button():
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def add_to_file():
-    webiste_text = entry_website.get()
-    email_username_text = entry_email_username.get()
-    password_text = entry_password.get()
+    webiste_text = entry_website.get().lower()
+    email_username_text = entry_email_username.get().lower()
+    password_text = entry_password.get().lower()
 
     new_data = {
         webiste_text: {
@@ -43,19 +43,42 @@ def add_to_file():
         messagebox.showwarning(title="Warning", message="There are empty text entries, \nplease fill them up!")
     else:
         try:
-            with open("data.json", "r") as datafile:
+            with open(r"password_manager\data.json", "r") as datafile:
                 data = json.load(datafile)
                 data.update(new_data)
         except FileNotFoundError:    
-            with open("data.json", "w") as datafile:
+            with open(r"password_manager\data.json", "w") as datafile:
                 json.dump(new_data, datafile, indent=4)
         else:
-            with open("data.json", "w") as datafile:
+            with open(r"password_manager\data.json", "w") as datafile:
                 json.dump(data, datafile, indent=4)
         finally:
                 entry_website.delete(0, END)
                 entry_password.delete(0, END)
                 entry_website.focus()
+
+
+# ---------------------------- FIND PASSWORD ------------------------------- #
+def fetch_data():
+
+    try:
+        #open json file
+        with open(r"password_manager\data.json") as datafile:
+            data = json.load(datafile)
+
+    except FileNotFoundError:
+        messagebox.showinfo(title="ERROR", message=f"Could not find file you are searching for")
+    else:
+        #read text typed in searchbar 
+        webiste_text = entry_website.get().lower()
+        
+        #fetch email and password
+        if webiste_text in data:
+            email = data[webiste_text]['email']
+            password = data[webiste_text]['password']
+            messagebox.showinfo(title=webiste_text, message=f"Your email: {email} \nYour password: {password}")
+        else:
+            messagebox.showinfo(title=webiste_text, message=f"Could not find {webiste_text}, does it exist? check typo?")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -76,10 +99,12 @@ button_gen_pass.grid(column=2, row=3)
 button_add = Button(text="Add",font=(FONT_NAME, 10), bg=Light_yellow, width=49, command=add_to_file)
 button_add.grid(column=1, row=4, columnspan=2)
 
+button_search = Button(text="Search",font=(FONT_NAME, 10), bg=Light_yellow, width=17, command=fetch_data)
+button_search.grid(column=2, row=1)
 
 #Entry boxes
-entry_website = Entry(width=65)
-entry_website.grid(column=1, row=1, columnspan=2)
+entry_website = Entry(width=41)
+entry_website.grid(column=1, row=1)
 entry_website.focus()
 
 entry_email_username = Entry(width=65)
