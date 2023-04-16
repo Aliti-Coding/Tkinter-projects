@@ -6,7 +6,9 @@ import json
 FONT_NAME = "Courier"
 Light_yellow = "#FFFFD0"
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
-def password_gen():        
+def password_gen():
+    """Generates a random password
+    """     
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
     numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
@@ -19,8 +21,10 @@ def password_gen():
     return ''.join(password_list)
 
 def password_gen_button():
+    """Generates password on password entry
+    """
     password = password_gen()
-    print(password)
+    # print(password)
     entry_password.insert(END, password)
     pyperclip.copy(password)
 
@@ -28,6 +32,8 @@ def password_gen_button():
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def add_to_file():
+    """Saves data to a json file 
+    """
     webiste_text = entry_website.get().lower()
     email_username_text = entry_email_username.get().lower()
     password_text = entry_password.get().lower()
@@ -60,7 +66,10 @@ def add_to_file():
 
 # ---------------------------- FIND PASSWORD ------------------------------- #
 def fetch_data():
-
+    """Fetches data from the json file 
+    so you can search for your password in the
+    GUI
+    """
     try:
         #open json file
         with open(r"password_manager\data.json") as datafile:
